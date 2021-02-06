@@ -38,28 +38,19 @@ namespace Ono.MVP.View
             //X軸操作用Sliderの値の変更を監視
             _sliderX.OnValueChangedAsObservable()
                 .DistinctUntilChanged()
-                .Subscribe(value =>
-                {
-                    OnValueChange(value, _floatReactivePropertyX, _textX);
-                })
+                .Subscribe(value => { OnValueChange(value, _floatReactivePropertyX, _textX); })
                 .AddTo(this);
 
             //Y軸操作用Sliderの値の変更を監視
             _sliderY.OnValueChangedAsObservable()
                 .DistinctUntilChanged()
-                .Subscribe(value =>
-                {
-                    OnValueChange(value, _floatReactivePropertyY, _textY);
-                })
+                .Subscribe(value => { OnValueChange(value, _floatReactivePropertyY, _textY); })
                 .AddTo(this);
 
             //Z軸操作用Sliderの値の変更を監視
             _sliderZ.OnValueChangedAsObservable()
                 .DistinctUntilChanged()
-                .Subscribe(value =>
-                {
-                    OnValueChange(value, _floatReactivePropertyZ, _textZ);
-                })
+                .Subscribe(value => { OnValueChange(value, _floatReactivePropertyZ, _textZ); })
                 .AddTo(this);
         }
 
@@ -69,7 +60,7 @@ namespace Ono.MVP.View
         /// <param name="value">Sliderの値</param>
         /// <param name="floatReactiveProperty">値を更新をしたいRP</param>
         /// <param name="valueText">更新するテキスト</param>
-        private void OnValueChange(float value, FloatReactiveProperty floatReactiveProperty,Text valueText)
+        private void OnValueChange(float value, FloatReactiveProperty floatReactiveProperty, Text valueText)
         {
             //値の整形
             var arrangeValue = Mathf.Floor((value - 0.5f) * 100) / 100 * 360;
