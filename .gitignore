@@ -20,7 +20,7 @@
 [Aa]ssets/Plugins/Editor/JetBrains*
 
 # Zenject,UniRx
-[Aa]ssets/Plugins/
+[Aa]ssets/Plugins*
 
 # Rider
 .idea/
