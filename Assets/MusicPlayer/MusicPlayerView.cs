@@ -20,6 +20,13 @@ namespace Ono.MVP.View
         public IReadOnlyReactiveProperty<MusicPlayMode> MusicPlayModeRP => _musicPlayModeRP;
         private readonly MusicPlayModeReactiveProperty _musicPlayModeRP = new MusicPlayModeReactiveProperty();
         
+        /// <summary>
+        /// 再生時間
+        /// 購読機能のみ外部に公開
+        /// </summary>
+        public IReadOnlyReactiveProperty<float> MusicPlayTimeRP => _musicPlayTimeRP;
+        private readonly FloatReactiveProperty _musicPlayTimeRP = new FloatReactiveProperty();
+        
         private void Start()
         {
             //プレイボタン押下
@@ -40,6 +47,14 @@ namespace Ono.MVP.View
                     _stopButton.gameObject.SetActive(false);
                     //値の更新(発火)
                     _musicPlayModeRP.Value = MusicPlayMode.Stop;
+                }).AddTo(this);
+
+            //シークバー操作
+            _seekBar.OnValueChangedAsObservable()
+                .Subscribe(value =>
+                {
+                    //値の更新(発火)
+                    _musicPlayTimeRP.Value = value;
                 }).AddTo(this);
         }
     }
