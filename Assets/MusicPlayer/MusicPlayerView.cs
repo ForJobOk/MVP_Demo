@@ -45,7 +45,5 @@ namespace Ono.MVP.View
                     break;
             }
         }
-        
-       
     }
 }

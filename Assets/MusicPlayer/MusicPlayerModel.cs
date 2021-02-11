@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Ono.MVP.CustomRP;
+﻿using Ono.MVP.CustomRP;
 using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
 
 public class MusicPlayerModel : MonoBehaviour
@@ -14,7 +13,25 @@ public class MusicPlayerModel : MonoBehaviour
     /// </summary>
     public IReadOnlyReactiveProperty<MusicPlayMode> MusicPlayModeRP => _musicPlayModeRP;
     private readonly MusicPlayModeReactiveProperty _musicPlayModeRP = new MusicPlayModeReactiveProperty();
-        
+    
+    /// <summary>
+    /// 再生時間
+    /// 購読機能のみ外部に公開
+    /// </summary>
+    public IReadOnlyReactiveProperty<float> MusicPlayTimeRP => _musicPlayTimeRP;
+    private readonly FloatReactiveProperty _musicPlayTimeRP = new FloatReactiveProperty();
+
+    private void Start()
+    {
+        this.UpdateAsObservable()
+            .Where(_ => _musicPlayModeRP.Value == MusicPlayMode.Play)
+            .Subscribe(_ =>
+            {
+                _musicPlayTimeRP.Value = _bgm.time / _bgm.clip.length;
+            })
+            .AddTo(this);
+    }
+
     /// <summary>
     /// 再生し再生モードに切り替え
     /// </summary>
@@ -29,7 +46,7 @@ public class MusicPlayerModel : MonoBehaviour
     /// </summary>
     public void StopMusic()
     {
-        _bgm.Stop();
+        _bgm.Pause();
         _musicPlayModeRP.Value = MusicPlayMode.Stop;
     }
 
