@@ -1,5 +1,4 @@
 ﻿using Ono.MVP.CustomRP;
-using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,48 +13,39 @@ namespace Ono.MVP.View
         [SerializeField] private Slider _seekBar;
 
         /// <summary>
-        /// 音楽再生モードかどうか
-        /// 購読機能のみ外部に公開
+        /// 再生ボタン
         /// </summary>
-        public IReadOnlyReactiveProperty<MusicPlayMode> MusicPlayModeRP => _musicPlayModeRP;
-        private readonly MusicPlayModeReactiveProperty _musicPlayModeRP = new MusicPlayModeReactiveProperty();
+        public Button PlayButton => _playButton;
         
         /// <summary>
-        /// 再生時間
-        /// 購読機能のみ外部に公開
+        /// 停止ボタン
         /// </summary>
-        public IReadOnlyReactiveProperty<float> MusicPlayTimeRP => _musicPlayTimeRP;
-        private readonly FloatReactiveProperty _musicPlayTimeRP = new FloatReactiveProperty();
+        public Button StopButton => _stopButton;
         
-        private void Start()
+        /// <summary>
+        /// シークバー
+        /// </summary>
+        public Slider SeekBar => _seekBar;
+
+        /// <summary>
+        /// ボタン切り替え
+        /// </summary>
+        /// <param name="musicPlayMode">音楽再生モード</param>
+        public void SwitchButton(MusicPlayMode musicPlayMode)
         {
-            //プレイボタン押下
-            _playButton.OnClickAsObservable()
-                .Subscribe(_ =>
-                {
+            switch (musicPlayMode)
+            {
+                case MusicPlayMode.Play:
                     _playButton.gameObject.SetActive(false);
                     _stopButton.gameObject.SetActive(true);
-                    //値の更新(発火)
-                    _musicPlayModeRP.Value = MusicPlayMode.Play;
-                }).AddTo(this);
-        
-            //停止ボタン押下
-            _stopButton.OnClickAsObservable()
-                .Subscribe(_ =>
-                {
+                    break;
+                case MusicPlayMode.Stop:
                     _playButton.gameObject.SetActive(true);
                     _stopButton.gameObject.SetActive(false);
-                    //値の更新(発火)
-                    _musicPlayModeRP.Value = MusicPlayMode.Stop;
-                }).AddTo(this);
-
-            //シークバー操作
-            _seekBar.OnValueChangedAsObservable()
-                .Subscribe(value =>
-                {
-                    //値の更新(発火)
-                    _musicPlayTimeRP.Value = value;
-                }).AddTo(this);
+                    break;
+            }
         }
+        
+       
     }
 }
