@@ -49,8 +49,10 @@ public class MusicPlayerModel : MonoBehaviour
     /// <summary>
     /// 再生し再生モードに切り替え
     /// </summary>
-    public void PlayMusic()
+    /// <param name="playTimeNormalizedValue">正規化された再生箇所の値</param>
+    public void PlayMusic(float playTimeNormalizedValue)
     {
+        _bgm.time = playTimeNormalizedValue * _bgm.clip.length;
         _bgm.Play();
         _musicPlayModeRP.Value = MusicPlayMode.Play;
     }
@@ -62,15 +64,5 @@ public class MusicPlayerModel : MonoBehaviour
     {
         _bgm.Pause();
         _musicPlayModeRP.Value = MusicPlayMode.Stop;
-    }
-
-    /// <summary>
-    /// 再生時間を変更し再生
-    /// </summary>
-    /// <param name="playTimeNormalizedValue">再生箇所の正規化された時間</param>
-    public void ChangePlayTime(float playTimeNormalizedValue)
-    {
-        _bgm.time = playTimeNormalizedValue * _bgm.clip.length;
-        PlayMusic();
     }
 }

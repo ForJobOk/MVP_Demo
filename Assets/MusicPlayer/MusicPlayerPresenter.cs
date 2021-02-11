@@ -37,19 +37,19 @@ public class MusicPlayerPresenter : IInitializable, IDisposable
         
         //再生ボタン押下
         _musicPlayerView.PlayButton.OnClickAsObservable()
-            .Subscribe(_ => { _musicPlayerModel.PlayMusic(); }).AddTo(_disposables);
+            .Subscribe(_ => { _musicPlayerModel.PlayMusic(_musicPlayerView.SeekBar.value); }).AddTo(_disposables);
 
         //停止ボタン押下
         _musicPlayerView.StopButton.OnClickAsObservable()
             .Subscribe(_ => { _musicPlayerModel.StopMusic(); }).AddTo(_disposables);
 
         //シークバーのドラッグ開始
-        _musicPlayerView.SeekBar.OnDragAsObservable()
+        _musicPlayerView.SeekBar.OnPointerDownAsObservable()
             .Subscribe(_ => { _musicPlayerModel.StopMusic(); }).AddTo(_disposables);
 
         //シークバーのドラッグ終了
-        _musicPlayerView.SeekBar.OnDropAsObservable()
-            .Subscribe(_ => { _musicPlayerModel.ChangePlayTime(_musicPlayerView.SeekBar.value); }).AddTo(_disposables);
+        _musicPlayerView.SeekBar.OnPointerUpAsObservable()
+            .Subscribe(_ => { _musicPlayerModel.PlayMusic(_musicPlayerView.SeekBar.value); }).AddTo(_disposables);
 
         //==========================
         // Model → Viewへの反映
@@ -65,9 +65,10 @@ public class MusicPlayerPresenter : IInitializable, IDisposable
                 _musicPlayerView.SetPlayTime(_musicPlayerModel.GetMusicTime());
             }).AddTo(_disposables);
 
-        //再生モードに応じてボタンの表示を切り替え
+        //再生モード変更に応じてボタンの表示を切り替え
         _musicPlayerModel.MusicPlayModeRP
-            .Subscribe(mode => { _musicPlayerView.SwitchButton(mode); }).AddTo(_disposables);
+            .SkipLatestValueOnSubscribe()
+            .Subscribe(mode => { _musicPlayerView.SwitchButton(); }).AddTo(_disposables);
     }
 
     /// <summary>

@@ -1,5 +1,4 @@
-﻿using Ono.MVP.CustomRP;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace Ono.MVP.View
@@ -27,7 +26,7 @@ namespace Ono.MVP.View
         /// シークバー
         /// </summary>
         public Slider SeekBar => _seekBar;
-        
+
         /// <summary>
         /// 再生時間をセット
         /// </summary>
@@ -41,19 +40,10 @@ namespace Ono.MVP.View
         /// ボタン切り替え
         /// </summary>
         /// <param name="musicPlayMode">音楽再生モード</param>
-        public void SwitchButton(MusicPlayMode musicPlayMode)
+        public void SwitchButton()
         {
-            switch (musicPlayMode)
-            {
-                case MusicPlayMode.Play:
-                    _playButton.gameObject.SetActive(false);
-                    _stopButton.gameObject.SetActive(true);
-                    break;
-                case MusicPlayMode.Stop:
-                    _playButton.gameObject.SetActive(true);
-                    _stopButton.gameObject.SetActive(false);
-                    break;
-            }
+            _playButton.gameObject.SetActive(!_playButton.gameObject.activeInHierarchy);
+            _stopButton.gameObject.SetActive(!_stopButton.gameObject.activeInHierarchy);
         }
     }
 }
