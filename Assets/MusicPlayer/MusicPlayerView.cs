@@ -39,7 +39,6 @@ namespace Ono.MVP.View
         /// <summary>
         /// ボタン切り替え
         /// </summary>
-        /// <param name="musicPlayMode">音楽再生モード</param>
         public void SwitchButton()
         {
             _playButton.gameObject.SetActive(!_playButton.gameObject.activeInHierarchy);
