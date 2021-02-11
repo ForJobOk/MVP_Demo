@@ -25,7 +25,7 @@ public class MusicPlayerPresenter : IInitializable, IDisposable
     }
 
     /// <summary>
-    /// MonoBehaviorで言うところのStartに当たるライフサイクルイベントとして呼ばれるメソッド
+    /// "MonoBehaviorで言うところのStart"にあたるライフサイクルイベントとして呼ばれるメソッド
     /// </summary>
     public void Initialize()
     {
@@ -55,13 +55,14 @@ public class MusicPlayerPresenter : IInitializable, IDisposable
         // Model → Viewへの反映
         //==========================
         
-        //再生時間をシークバーに反映
+        //再生時間を反映
         _musicPlayerModel.MusicPlayTimeRP
             .Subscribe(time =>
             {
+                //シークバーに反映
                 _musicPlayerView.SeekBar.value = time;
-                var (item1, item2) = _musicPlayerModel.GetMusicTime();
-                _musicPlayerView.SetPlayTime($"{item1}/{item2}");
+                //テキストに反映
+                _musicPlayerView.SetPlayTime(_musicPlayerModel.GetMusicTime());
             }).AddTo(_disposables);
 
         //再生モードに応じてボタンの表示を切り替え

@@ -36,14 +36,14 @@ public class MusicPlayerModel : MonoBehaviour
     /// <summary>
     /// 再生時間を時分として取得
     /// </summary>
-    /// <returns>再生時間、総再生時間</returns>
-    public (string, string) GetMusicTime()
+    /// <returns>再生時間</returns>
+    public string GetMusicTime()
     {
         var totalMinute = (int)_bgm.clip.length / 60;
         var totalSecond = (int)_bgm.clip.length % 60;
         var currentMinute = (int)_bgm.time / 60;
         var currentSecond = (int)_bgm.time % 60;
-        return ($"{currentMinute}:{currentSecond:00}", $"{totalMinute}:{totalSecond}");
+        return $"{currentMinute}:{currentSecond:00} / {totalMinute}:{totalSecond}";
     }
     
     /// <summary>
