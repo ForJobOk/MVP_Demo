@@ -68,7 +68,7 @@ public class MusicPlayerPresenter : IInitializable, IDisposable
         //再生モード変更に応じてボタンの表示を切り替え
         _musicPlayerModel.MusicPlayModeRP
             .SkipLatestValueOnSubscribe()
-            .Subscribe(mode => { _musicPlayerView.SwitchButton(); }).AddTo(_disposables);
+            .Subscribe(_ => { _musicPlayerView.SwitchButton(); }).AddTo(_disposables);
     }
 
     /// <summary>
