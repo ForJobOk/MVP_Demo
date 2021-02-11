@@ -1,6 +1,7 @@
 ﻿using System;
 using Ono.MVP.View;
 using UniRx;
+using UniRx.Triggers;
 using Zenject;
 
 /// <summary>
@@ -30,26 +31,40 @@ public class MusicPlayerPresenter : IInitializable, IDisposable
     {
         _disposables = new CompositeDisposable();
 
-        //View → Modelへの反映
+        //==========================
+        // View → Modelへの反映
+        //==========================
+        
+        //再生ボタン押下
         _musicPlayerView.PlayButton.OnClickAsObservable()
-            .DistinctUntilChanged()
             .Subscribe(_ => { _musicPlayerModel.PlayMusic(); }).AddTo(_disposables);
 
-        //View → Modelへの反映
+        //停止ボタン押下
         _musicPlayerView.StopButton.OnClickAsObservable()
-            .DistinctUntilChanged()
             .Subscribe(_ => { _musicPlayerModel.StopMusic(); }).AddTo(_disposables);
 
-        //View → Modelへの反映
-        _musicPlayerView.SeekBar.OnValueChangedAsObservable()
-            .DistinctUntilChanged()
-            .Subscribe(value => { _musicPlayerModel.ChangePlayTime(value); }).AddTo(_disposables);
+        //シークバーのドラッグ開始
+        _musicPlayerView.SeekBar.OnDragAsObservable()
+            .Subscribe(_ => { _musicPlayerModel.StopMusic(); }).AddTo(_disposables);
 
-        //Model → Viewへの反映
+        //シークバーのドラッグ終了
+        _musicPlayerView.SeekBar.OnDropAsObservable()
+            .Subscribe(_ => { _musicPlayerModel.ChangePlayTime(_musicPlayerView.SeekBar.value); }).AddTo(_disposables);
+
+        //==========================
+        // Model → Viewへの反映
+        //==========================
+        
+        //再生時間をシークバーに反映
         _musicPlayerModel.MusicPlayTimeRP
-            .Subscribe(time => { _musicPlayerView.SeekBar.value = time; }).AddTo(_disposables);
+            .Subscribe(time =>
+            {
+                _musicPlayerView.SeekBar.value = time;
+                var (item1, item2) = _musicPlayerModel.GetMusicTime();
+                _musicPlayerView.PlayTimeText.text = $"{item1}/{item2}";
+            }).AddTo(_disposables);
 
-        //Model → Viewへの反映
+        //再生モードに応じてボタンの表示を切り替え
         _musicPlayerModel.MusicPlayModeRP
             .Subscribe(mode => { _musicPlayerView.SwitchButton(mode); }).AddTo(_disposables);
     }
