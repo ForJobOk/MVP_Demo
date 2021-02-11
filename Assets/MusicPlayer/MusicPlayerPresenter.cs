@@ -25,7 +25,7 @@ public class MusicPlayerPresenter : IInitializable, IDisposable
     }
 
     /// <summary>
-    /// 初期化時のライフサイクルイベントとして呼ばれるメソッド
+    /// MonoBehaviorで言うところのStartに当たるライフサイクルイベントとして呼ばれるメソッド
     /// </summary>
     public void Initialize()
     {
