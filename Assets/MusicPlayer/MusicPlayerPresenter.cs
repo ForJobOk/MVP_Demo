@@ -61,7 +61,7 @@ public class MusicPlayerPresenter : IInitializable, IDisposable
             {
                 _musicPlayerView.SeekBar.value = time;
                 var (item1, item2) = _musicPlayerModel.GetMusicTime();
-                _musicPlayerView.PlayTimeText.text = $"{item1}/{item2}";
+                _musicPlayerView.SetPlayTime($"{item1}/{item2}");
             }).AddTo(_disposables);
 
         //再生モードに応じてボタンの表示を切り替え

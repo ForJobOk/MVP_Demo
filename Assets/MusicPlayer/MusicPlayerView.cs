@@ -29,11 +29,6 @@ namespace Ono.MVP.View
         public Slider SeekBar => _seekBar;
         
         /// <summary>
-        /// 再生時間のテキスト
-        /// </summary>
-        public Text PlayTimeText => _playTimeText;
-
-        /// <summary>
         /// 再生時間をセット
         /// </summary>
         /// <param name="timeText">表示される時間</param>
