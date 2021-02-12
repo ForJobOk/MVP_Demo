@@ -1,3 +1,5 @@
+using Ono.MVP.Model;
+using Ono.MVP.Presenter;
 using Ono.MVP.View;
 using UnityEngine;
 using Zenject;
